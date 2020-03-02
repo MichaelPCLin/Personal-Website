@@ -1,0 +1,38 @@
+#start {
+    position: absolute;
+}
+
+#zombie {
+    height: 15%;
+    width: 7.5%;
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#score {
+    font-size: 20;
+    visibility: hidden;
+    position: absolute;
+}
+
+#end {
+    position: absolute;
+    visibility: hidden;
+}
+#top {
+    height: 10%;
+    width: 100%;
+}
+
+#board {
+    height: 80%;
+    width: 100%;
+}
+
+#bottom {
+    height: 10%;
+    width: 100%;
+    text-align: center;
+}
