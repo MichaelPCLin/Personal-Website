@@ -1,0 +1,127 @@
+<DOCTYPE html>
+    <html>
+
+    <head>
+        <style>
+            #hint {
+                top: 90%;
+                left: 5%;
+                position: relative;
+                width: 10%;
+                height: 5%;
+                z-index: 1;
+            }
+            #get {
+                z-index: 1;
+                position: relative;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <p id="stop"><br>How many buttons to create? (Enter an integer between 2 and 10)</p>
+        <input type="text" id="input" value="">
+        <input type="button" id="get" value="Go!" onclick="getButtons()"></input>
+        <input type="button" id="hint" value="Hint" onclick="displayButtons()"></input>
+
+
+        <div id="here"></div>
+        <script>
+            let buttons = [];
+
+            function Button(color, top, left, num) {
+                this.btn = document.createElement("BUTTON");
+                this.btn.innerHTML = "Button " + (num + 1);
+                this.btn.style.width = "120px";
+                this.btn.style.height = "60px";
+                this.btn.style.backgroundColor = "#" + color;
+                document.getElementById("here").appendChild(this.btn);
+
+                this.move = function (top, left) {
+                    this.btn.style.top = top;
+                    this.btn.style.left = left;
+                }
+                this.move(top, left);
+            }
+            //Returns random number as percentage and multiplies with current screen size
+            function ran() {
+                let ran = Math.random();
+                while (ran > 0.85) {
+                    ran = Math.random();
+                }
+                return ran
+            }
+            //Generates buttons and pushes them into above array
+            function generateButton(num) {
+                for (let i = 0; i < num; i++) {
+                    buttons.push(new Button(Math.floor(Math.random() * 16777215).toString(16), ran(), ran(), i));
+                }
+            }
+
+            let windowHeight = 0
+            let windowWidth = 0;
+            //Runs the move function within button, sets based on screen size
+            function moveBtn() {
+                windowHeight = window.innerHeight;
+                windowWidth = window.innerWidth;
+                let count = 0;
+                for (let i = 0; i < buttons.length; i++) {
+                    buttons[i].btn.style.position = "absolute";
+                    buttons[i].move(ran() * windowHeight, ran() * windowWidth);
+                    buttons[i].btn.innerHTML = "";
+                    buttons[i].btn.onclick = function () {
+                        if (count == i) {
+                            count++
+                            console.log("count = " + count)
+                        } else {
+                            document.getElementById("stop").innerHTML = "wrong wrong wrong";
+                            console.log("count = " + count)
+                        }
+
+                        if (count == buttons.length) {
+                            document.getElementById("stop").innerHTML = "Excellent memory!";
+                        }
+                    }
+                }
+            }
+
+            //Gets input from textbox
+            //Runs generate and move
+            function getButtons() {
+                if (buttons.length > 0) {
+                    buttons = [];
+                    document.getElementById("here").innerHTML = '';
+                }
+                let gen = parseInt(document.getElementById("input").value);
+                if (gen > 10 || gen < 2) {
+                    document.getElementById("stop").innerHTML = "Invalid input: enter an integer between 2 and 10";
+                } else {
+                    generateButton(gen);
+                }
+                //time = number of buttons / 2;
+                let t = (gen/2) * 1000;
+                setTimeout(moveBtn, t);
+            }
+            let hintFlag = true;
+            //Switches hint on and off using boolean
+            function displayButtons() {
+                if (hintFlag) {
+                    for (let i = 0; i < buttons.length; i++) {
+                        buttons[i].btn.innerHTML = "Button " + (i + 1);
+                    }
+                    hintFlag = !hintFlag;
+                    console.log("hint on");
+                } else {
+                    for (let i = 0; i < buttons.length; i++) {
+                        buttons[i].btn.innerHTML = "";
+                    }
+                    hintFlag = !hintFlag;
+                    console.log("hint off");
+                }
+            }
+        </script>
+    </body>
+
+    </html>
+</DOCTYPE>
